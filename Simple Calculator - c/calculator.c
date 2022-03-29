@@ -21,11 +21,8 @@ int main(void)
                 result = num1 - num2;
                 break;
             
-            case 'x':
-                result = num1 * num2;
-                break;
-
             case '*':
+            case 'x':
                 result = num1 * num2;
                 break;
 
