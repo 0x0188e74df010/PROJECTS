@@ -1,2 +1,2 @@
 # Bubble Sort
-![Bubble Sort](https://en.wikipedia.org/wiki/File:Bubble-sort-example-300px.gif#/media/File:Bubble-sort-example-300px.gif)
+![Bubble Sort](https://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif)
