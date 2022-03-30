@@ -29,17 +29,14 @@ int main(void)
         }
 
         computer_input = rps[random_rps()];
+        
         printf("%c vs %c\n", player_input, computer_input);
         
         switch (player_input)
         {
             case 'r':
                 switch (computer_input)
-                {
-                    case 'r':
-                        result = "draw";
-                        break;
-                    
+                {   
                     case 'p':
                         result = "lose";
                         score--;
@@ -48,6 +45,10 @@ int main(void)
                     case 's':
                         result = "win";
                         score++;
+                        break;
+
+                    default:
+                        result = "draw";
                         break;
                 }
                 break;
@@ -60,13 +61,13 @@ int main(void)
                         score++;
                         break;
 
-                    case 'p':
-                        result = "draw";
-                        break;
-
                     case 's':
                         result = "lose";
                         score--;
+                        break;
+
+                    default:
+                        result = "draw";
                         break;
                 }
                 break;
@@ -84,7 +85,7 @@ int main(void)
                         score++;
                         break;
 
-                    case 's':
+                    default:
                         result = "draw";
                         break;
                 }
