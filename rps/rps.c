@@ -10,8 +10,8 @@ int random_rps();
 int main(void)
 {
     int score = 0;
-    char rps[] = {'r', 'p', 's'};
-    char computer_input = rps[random_rps()];
+    const char RPS[] = {'r', 'p', 's'};
+    char computer_input = RPS[random_rps()];
     char player_input;
     char *result = NULL;
     
@@ -28,7 +28,7 @@ int main(void)
             }
         }
 
-        computer_input = rps[random_rps()];
+        computer_input = RPS[random_rps()];
         
         printf("%c vs %c\n", player_input, computer_input);
         
