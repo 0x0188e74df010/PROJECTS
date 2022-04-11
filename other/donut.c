@@ -30,7 +30,7 @@ int main() {
                       cosi  = cos(i),
                       cosB  = cos(B),
                       sinB  = sin(B),
-                      t = sini * cosj2 * cosA - sinj * sinA;
+                      t     = sini * cosj2 * cosA - sinj * sinA;
                 
                 int x = 40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB),
                     y = 12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB),
