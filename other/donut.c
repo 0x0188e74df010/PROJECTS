@@ -6,7 +6,8 @@
 int k;
 double sin(), cos();
 
-int main() {
+int main(void) 
+    {
     float A = 0, B = 0, i, j, z[1760];
     char b[1760];
     printf("\x1b[2J");
@@ -47,7 +48,7 @@ int main() {
         printf("\x1b[d");
         for (k = 0; 1761 > k; k++)
             putchar(k % 80 ? b[k] : 10);
-        A += 0.05;
-        B += 0.05;
+        A += 0.055;
+        B += 0.055;
     }
 }
