@@ -1,5 +1,5 @@
 /*
-
+ *
  * remaking card_flip.py in c, just because
  * inspired by x+y movie
  * 
@@ -21,6 +21,11 @@ int main(void)
     int *cards = calloc(CARDS_LENGTH, sizeof(int));
     int interact_count = 0;
     int user_input;
+
+    if (cards == NULL)
+    {
+        return 1;
+    }
 
     while (1)
     {
