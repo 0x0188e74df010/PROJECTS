@@ -1,28 +1,58 @@
 #include <stdio.h>
-#include <string.h>
 
-void string_copy(char *destination, char *origin);
+char *my_string_copy1(char *destination, char *source);
+char *my_string_copy2(char *destination, char *source);
 
 int main(void)
 {
-    char string1[] = "HELLO!";
-    char string2[2];
+    char src[] = "copy this";
+    char dest[100];
 
-    string_copy(string2, string1);
+    char *dest_ptr = my_string_copy2(dest, src);
 
-    printf("string2: %s\n", string2);
+    printf("     src: %s\n", src);
+    printf("    dest: %s\n", dest);
+    printf("dest_ptr: %s\n", dest_ptr);
+
+    printf("\n");
+
+    printf("     src: %p\n", src);
+    printf("    dest: %p\n", dest);
+    printf("dest_ptr: %p\n", dest_ptr);
 
     return 0;
 }
 
 // unsafe
-void string_copy(char *destination, char *origin)
+char *my_string_copy1(char *destination, char *source)
 {
-    printf("origin len: %ld\n", strlen(origin));
-    printf("destination len: %ld\n", strlen(destination));
+    if (destination == NULL) return NULL;
 
-    for (int i = 0; i < strlen(origin)+1; i++)
+    int i = 0;
+    while (source[i] != '\0')
     {
-        destination[i] = origin[i];
+        destination[i] = source[i];
+        i++;
     }
+
+    destination[i] = '\0';
+    return destination;
+}
+
+char *my_string_copy2(char *destination, char *source)
+{
+    if (destination == NULL) return NULL;
+
+    char *return_ptr = destination;
+
+    while (*source != '\0')
+    {
+        *destination = *source;
+
+        destination++;
+        source++;
+    }
+    *destination = '\0';
+
+    return return_ptr;
 }
