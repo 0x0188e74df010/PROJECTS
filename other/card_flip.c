@@ -22,10 +22,7 @@ int main(void)
     int interact_count = 0;
     int user_input;
 
-    if (cards == NULL)
-    {
-        return 1;
-    }
+    if (cards == NULL) return 1;
 
     while (1)
     {
