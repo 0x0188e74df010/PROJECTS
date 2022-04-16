@@ -2,7 +2,7 @@ import random
 
 # face down: 0
 # face up: 1
-CARDS_LENGTH = 6
+CARDS_LENGTH = 20
 
 interact_count = 0
 
@@ -22,8 +22,11 @@ def interact(cards, index):
 cards = [0 for _ in range(CARDS_LENGTH)]
 
 # while set(cards) != {1}:
+#     cpu_input = random.randrange(len(cards) - 1)
+#     if cards[cpu_input] == 1:
+#         continue
 #     print(cards)
-#     interact(cards, random.randrange(len(cards)))
+#     interact(cards, cpu_input)
 #     interact_count += 1
     
 while set(cards) != {1}:
