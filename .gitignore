@@ -10,3 +10,4 @@ string/string_len
 other/card_flip
 string/string_copy
 other/generate_array
+other/swap
