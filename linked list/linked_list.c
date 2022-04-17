@@ -12,7 +12,7 @@ typedef struct LinkedList
 
 LinkedList *create_new_element(const int number);
 void free_up(LinkedList *head);
-void print_array(LinkedList *head);
+void print_list(LinkedList *head);
 
 
 int main(void)
@@ -34,7 +34,7 @@ int main(void)
 		}
 		else if (strcmp("print\n", command) == 0)
 		{
-			print_array(head);
+			print_list(head);
 		}
 		else if (sscanf(command, "%d", &num) != 0)
 		{
@@ -87,7 +87,7 @@ void free_up(LinkedList *head)
 	}
 }
 
-void print_array(LinkedList *head)
+void print_list(LinkedList *head)
 {
 	LinkedList *t = head;
 	
