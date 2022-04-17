@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 
 typedef struct LinkedList
@@ -10,33 +11,51 @@ typedef struct LinkedList
 
 
 LinkedList *create_new_element(const int number);
+void free_up(LinkedList *head);
 void print_array(LinkedList *head);
 
 
 int main(void)
 {
+	char command[16];
+	int num;
+
 	LinkedList *head = NULL;
 	LinkedList *added = NULL;
 
-	int age;
-	scanf("%d", &age);
-
-	head = create_new_element(age);
-	added = head;
-
 	while (1)
 	{
-		scanf(" %d", &age);
-		if (age == 2022) break;
+		printf(": ");
+		fgets(command, 16, stdin);
 
-		added->next = create_new_element(age);
-		added = added->next;
+		if (strcmp("quit\n", command) == 0)
+		{
+			break;
+		}
+		else if (strcmp("print\n", command) == 0)
+		{
+			print_array(head);
+		}
+		else if (sscanf(command, "%d", &num) != 0)
+		{
+			if (head == NULL)
+			{
+				head = create_new_element(num);
+				if (head == NULL) break;
+
+				added = head;
+			}
+			else
+			{
+				added->next = create_new_element(num);
+				if (added->next == NULL) break;
+
+				added = added->next;
+			}
+		}
 	}
 
-	print_array(head);
-
-	free(head);
-	free(added);
+	free_up(head);
 
 	return 0;
 }
@@ -53,6 +72,19 @@ LinkedList *create_new_element(const int number)
 	printf("created new element: %p\n", element);
 
 	return element;
+}
+
+void free_up(LinkedList *head)
+{
+	LinkedList *next = NULL;
+	
+	while (head)
+	{
+		next = head->next;
+		printf("freeing %d at %p\n", head->num, head);
+		free(head);
+		head = next;
+	}
 }
 
 void print_array(LinkedList *head)
