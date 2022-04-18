@@ -9,6 +9,8 @@ len = get length of list
 
 index (number) = get value of (number) index
 
+remove (number) = remove value at index (number)
+
 quit = quit program
 
 ## linked_list_string
