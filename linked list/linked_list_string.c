@@ -6,22 +6,23 @@
  * ADD DELETE A CERTAIN wORD / DELETE AT A CERTAIN INDEX
  */
 
-typedef struct LinkedList
+typedef struct node
 {
 	char *str;
-	struct LinkedList *next;
-} LinkedList;
+	struct node *next;
+} node;
 
-LinkedList *create_new_element(char *string);
-void print_list(LinkedList *head);
-int len_list(LinkedList *head);
-char *get_index(LinkedList *head, int index);
-void free_up(LinkedList *head);
+node *create_new_node(char *string);
+void print_list(node *head);
+int len_list(node *head);
+char *get_node(node *head, int index);
+void remove_node(node *head, int index);
+void free_node(node *head);
 
 int main(void)
 {
-	LinkedList *head = NULL;
-	LinkedList *added = NULL;
+	node *head = NULL;
+	node *added = NULL;
 
 	char command[16];
 	char text[64];
@@ -31,11 +32,11 @@ int main(void)
 	{
 		fgets(command, sizeof(command), stdin);
 
-		if (strcmp("quit\n", command) == 0)
+		if (strcmp("quit\n", command) == 0 || strcmp("q\n", command) == 0)
 		{
 			break;
 		}
-		else if (strcmp("print\n", command) == 0)
+		else if (strcmp("print\n", command) == 0 || strcmp("p\n", command) == 0)
 		{
 			print_list(head);
 		}
@@ -43,24 +44,38 @@ int main(void)
 		{
 			printf("%d\n", len_list(head));
 		}
-		else if (sscanf(command, "index %d", &index) != 0)
+		else if (sscanf(command, "index %d", &index) != 0 || sscanf(command, "i %d", &index) != 0)
 		{
 			int len = len_list(head);
 			if (index >= len || len <= 0 || index < 0) continue;
-			printf("\"%s\"\n", get_index(head, index));
+			printf("\"%s\"\n", get_node(head, index));
+		}
+		else if (sscanf(command, "remove %d", &index) != 0 || sscanf(command, "rm %d", &index) != 0)
+		{
+			int len = len_list(head);
+			if (index >= len || len <= 0 || index < 0) continue;
+
+			if (index == 0)
+			{
+				head = head->next;
+			}
+			else
+			{
+				remove_node(head, index);
+			}
 		}
 		else if (sscanf(command, "%s", text) != 0)
 		{
 			if (head == NULL)
 			{
-				head = create_new_element(text);
+				head = create_new_node(text);
 				if (head == NULL) break;
 
 				added = head;
 			}
 			else
 			{
-				added->next = create_new_element(text);
+				added->next = create_new_node(text);
 				if (added->next == NULL) break;
 
 				added = added->next;
@@ -68,29 +83,29 @@ int main(void)
 		}
 	}
 
-	free_up(head);
+	free_node(head);
 
 	return 0;
 }
 
-LinkedList *create_new_element(char *string)
+node *create_new_node(char *string)
 {
-	LinkedList *element = NULL;
-	element = malloc(sizeof(LinkedList));
+	node *element = NULL;
+	element = malloc(sizeof(node));
 	if (element == NULL) return NULL;
 
 	element->str = malloc(sizeof(char *));
 	strcpy(element->str, string);
 	element->next = NULL;
 
-	printf("created new element: %p\n", element);
+	printf("allocated new node: %p\n", element);
 
 	return element;
 }
 
-void print_list(LinkedList *head)
+void print_list(node *head)
 {
-	LinkedList *t = head;
+	node *t = head;
 
 	printf("[");
 	while (t->next != NULL)
@@ -101,10 +116,10 @@ void print_list(LinkedList *head)
 	printf("\"%s\"]\n", t->str);
 }
 
-int len_list(LinkedList *head)
+int len_list(node *head)
 {
 	int len = 0;
-	LinkedList *t = head;
+	node *t = head;
 
 	while (t != NULL)
 	{
@@ -115,9 +130,9 @@ int len_list(LinkedList *head)
 	return len;
 }
 
-char *get_index(LinkedList *head, int index)
+char *get_node(node *head, int index)
 {
-	LinkedList *t = head;
+	node *t = head;
 	for (int i = 0; i < index; i++)
 	{
 		t = t->next;
@@ -126,14 +141,25 @@ char *get_index(LinkedList *head, int index)
 	return t->str;
 }
 
-void free_up(LinkedList *head)
+void remove_node(node *head, int index)
 {
-	LinkedList *next_free = NULL;
+	node *p = head;
+
+	for (int i = 0; i < (index - 1); i++)
+	{
+		p = p->next;
+	}
+	p->next = p->next->next;
+}
+
+void free_node(node *head)
+{
+	node *next_free = NULL;
 	
 	while (head != NULL)
 	{
-		LinkedList *next_free = head->next;
-		printf("freed %s at %p\n", head->str, head);
+		node *next_free = head->next;
+		printf("freed %p\n", head);
 		free(head);
 		head = next_free;
 	}
