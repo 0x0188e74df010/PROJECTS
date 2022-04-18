@@ -30,9 +30,22 @@ int main(void)
 		printf(">> ");
 		fgets(command, 16, stdin);
 
-		if (strcmp("quit\n", command) == 0)
+		if (sscanf(command, "%d", &num) != 0)
 		{
-			break;
+			if (head == NULL)
+			{
+				head = create_new_element(num);
+				if (head == NULL) break;
+
+				added = head;
+			}
+			else
+			{
+				added->next = create_new_element(num);
+				if (added->next == NULL) break;
+
+				added = added->next;
+			}
 		}
 		else if (strcmp("print\n", command) == 0)
 		{
@@ -49,22 +62,9 @@ int main(void)
 
 			printf("%d\n", get_index(head, num));
 		}
-		else if (sscanf(command, "%d", &num) != 0)
+		else if (strcmp("quit\n", command) == 0)
 		{
-			if (head == NULL)
-			{
-				head = create_new_element(num);
-				if (head == NULL) break;
-
-				added = head;
-			}
-			else
-			{
-				added->next = create_new_element(num);
-				if (added->next == NULL) break;
-
-				added = added->next;
-			}
+			break;
 		}
 	}
 
