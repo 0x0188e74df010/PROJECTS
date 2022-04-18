@@ -48,7 +48,7 @@ int main(void)
 				added = added->next;
 			}
 		}
-		else if (strcmp("print\n", command) == 0)
+		else if (strcmp("print\n", command) == 0 || strcmp("p\n", command) == 0)
 		{
 			print_list(head);
 		}
@@ -56,14 +56,14 @@ int main(void)
 		{
 			printf("%d\n", len_list(head));
 		}
-		else if (sscanf(command, "index %d", &num) != 0)
+		else if (sscanf(command, "index %d", &num) != 0 || sscanf(command, "i %d", &num) != 0)
 		{
 			int len = len_list(head);
 			if (num >= len || len <= 0 || num < 0) continue;
 
 			printf("%d\n", get_node(head, num));
 		}
-		else if (sscanf(command, "remove %d", &num) != 0)
+		else if (sscanf(command, "remove %d", &num) != 0 || sscanf(command, "rm %d", &num) != 0)
 		{
 			int len = len_list(head);
 			if (num >= len || len <= 0 || num < 0) continue;
@@ -77,7 +77,7 @@ int main(void)
 				remove_node(head, num);
 			}
 		}
-		else if (strcmp("quit\n", command) == 0)
+		else if (strcmp("quit\n", command) == 0 || strcmp("q\n", command) == 0)
 		{
 			break;
 		}
@@ -97,7 +97,7 @@ node *create_new_node(const int number)
 	element->next = NULL;
 	element->num = number;
 
-	printf("created new node: %p\n", element);
+	printf("allocated new node: %p\n", element);
 
 	return element;
 }
