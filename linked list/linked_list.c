@@ -15,7 +15,7 @@ void print_list(node *head);
 int len_list(node *head);
 int get_node(node *head, int index);
 void remove_node(node *head, int index);
-void free_up(node *head);
+void free_node(node *head);
 
 
 int main(void)
@@ -83,7 +83,7 @@ int main(void)
 		}
 	}
 
-	free_up(head);
+	free_node(head);
 
 	return 0;
 }
@@ -152,7 +152,7 @@ void remove_node(node *head, int index)
 	p->next = p->next->next;
 }
 
-void free_up(node *head)
+void free_node(node *head)
 {
 	node *next = NULL;
 	
