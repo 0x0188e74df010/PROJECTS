@@ -2,50 +2,38 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+ * ADD DELETE A CERTAIN wORD / DELETE AT A CERTAIN INDEX
+ */
 
 typedef struct LinkedList
 {
-	int num;
+	char *str;
 	struct LinkedList *next;
 } LinkedList;
 
-
-LinkedList *create_new_element(const int number);
+LinkedList *create_new_element(char *string);
 void print_list(LinkedList *head);
 int len_list(LinkedList *head);
-int get_index(LinkedList *head, int index);
+char *get_index(LinkedList *head, int index);
 void free_up(LinkedList *head);
-
 
 int main(void)
 {
-	char command[16];
-	int num;
-
 	LinkedList *head = NULL;
 	LinkedList *added = NULL;
 
+	char command[16];
+	char text[64];
+	int index;
+
 	while (1)
 	{
-		printf(">> ");
-		fgets(command, 16, stdin);
+		fgets(command, sizeof(command), stdin);
 
-		if (sscanf(command, "%d", &num) != 0)
+		if (strcmp("quit\n", command) == 0)
 		{
-			if (head == NULL)
-			{
-				head = create_new_element(num);
-				if (head == NULL) break;
-
-				added = head;
-			}
-			else
-			{
-				added->next = create_new_element(num);
-				if (added->next == NULL) break;
-
-				added = added->next;
-			}
+			break;
 		}
 		else if (strcmp("print\n", command) == 0)
 		{
@@ -55,16 +43,28 @@ int main(void)
 		{
 			printf("%d\n", len_list(head));
 		}
-		else if (sscanf(command, "index %d", &num) != 0)
+		else if (sscanf(command, "index %d", &index) != 0)
 		{
 			int len = len_list(head);
-			if (num >= len || len <= 0 || num < 0) continue;
-
-			printf("%d\n", get_index(head, num));
+			if (index >= len || len <= 0 || index < 0) continue;
+			printf("\"%s\"\n", get_index(head, index));
 		}
-		else if (strcmp("quit\n", command) == 0)
+		else if (sscanf(command, "%s", text) != 0)
 		{
-			break;
+			if (head == NULL)
+			{
+				head = create_new_element(text);
+				if (head == NULL) break;
+
+				added = head;
+			}
+			else
+			{
+				added->next = create_new_element(text);
+				if (added->next == NULL) break;
+
+				added = added->next;
+			}
 		}
 	}
 
@@ -73,14 +73,15 @@ int main(void)
 	return 0;
 }
 
-LinkedList *create_new_element(const int number)
+LinkedList *create_new_element(char *string)
 {
 	LinkedList *element = NULL;
 	element = malloc(sizeof(LinkedList));
 	if (element == NULL) return NULL;
 
+	element->str = malloc(sizeof(char *));
+	strcpy(element->str, string);
 	element->next = NULL;
-	element->num = number;
 
 	printf("created new element: %p\n", element);
 
@@ -90,14 +91,14 @@ LinkedList *create_new_element(const int number)
 void print_list(LinkedList *head)
 {
 	LinkedList *t = head;
-	
+
 	printf("[");
 	while (t->next != NULL)
 	{
-		printf("%d, ", t->num);
+		printf("\"%s\", ", t->str);
 		t = t->next;
 	}
-	printf("%d]\n", t->num);
+	printf("\"%s\"]\n", t->str);
 }
 
 int len_list(LinkedList *head)
@@ -114,27 +115,26 @@ int len_list(LinkedList *head)
 	return len;
 }
 
-int get_index(LinkedList *head, int index)
+char *get_index(LinkedList *head, int index)
 {
 	LinkedList *t = head;
-
 	for (int i = 0; i < index; i++)
 	{
 		t = t->next;
 	}
 
-	return t->num;
+	return t->str;
 }
 
 void free_up(LinkedList *head)
 {
-	LinkedList *next = NULL;
+	LinkedList *next_free = NULL;
 	
 	while (head != NULL)
 	{
-		next = head->next;
+		LinkedList *next_free = head->next;
+		printf("freed %s at %p\n", head->str, head);
 		free(head);
-		printf("freed %p\n", head);
-		head = next;
+		head = next_free;
 	}
 }
