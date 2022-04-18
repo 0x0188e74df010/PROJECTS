@@ -3,18 +3,19 @@
 #include <string.h>
 
 
-typedef struct LinkedList
+typedef struct node
 {
 	int num;
-	struct LinkedList *next;
-} LinkedList;
+	struct node *next;
+} node;
 
 
-LinkedList *create_new_element(const int number);
-void print_list(LinkedList *head);
-int len_list(LinkedList *head);
-int get_index(LinkedList *head, int index);
-void free_up(LinkedList *head);
+node *create_new_node(const int number);
+void print_list(node *head);
+int len_list(node *head);
+int get_node(node *head, int index);
+void remove_node(node *head, int index);
+void free_up(node *head);
 
 
 int main(void)
@@ -22,8 +23,8 @@ int main(void)
 	char command[16];
 	int num;
 
-	LinkedList *head = NULL;
-	LinkedList *added = NULL;
+	node *head = NULL;
+	node *added = NULL;
 
 	while (1)
 	{
@@ -34,14 +35,14 @@ int main(void)
 		{
 			if (head == NULL)
 			{
-				head = create_new_element(num);
+				head = create_new_node(num);
 				if (head == NULL) break;
 
 				added = head;
 			}
 			else
 			{
-				added->next = create_new_element(num);
+				added->next = create_new_node(num);
 				if (added->next == NULL) break;
 
 				added = added->next;
@@ -60,7 +61,21 @@ int main(void)
 			int len = len_list(head);
 			if (num >= len || len <= 0 || num < 0) continue;
 
-			printf("%d\n", get_index(head, num));
+			printf("%d\n", get_node(head, num));
+		}
+		else if (sscanf(command, "remove %d", &num) != 0)
+		{
+			int len = len_list(head);
+			if (num >= len || len <= 0 || num < 0) continue;
+
+			if (num == 0) 
+			{
+				head = head->next;
+			}
+			else
+			{
+				remove_node(head, num);
+			}
 		}
 		else if (strcmp("quit\n", command) == 0)
 		{
@@ -73,23 +88,23 @@ int main(void)
 	return 0;
 }
 
-LinkedList *create_new_element(const int number)
+node *create_new_node(const int number)
 {
-	LinkedList *element = NULL;
-	element = malloc(sizeof(LinkedList));
+	node *element = NULL;
+	element = malloc(sizeof(node));
 	if (element == NULL) return NULL;
 
 	element->next = NULL;
 	element->num = number;
 
-	printf("created new element: %p\n", element);
+	printf("created new node: %p\n", element);
 
 	return element;
 }
 
-void print_list(LinkedList *head)
+void print_list(node *head)
 {
-	LinkedList *t = head;
+	node *t = head;
 	
 	printf("[");
 	while (t->next != NULL)
@@ -100,10 +115,10 @@ void print_list(LinkedList *head)
 	printf("%d]\n", t->num);
 }
 
-int len_list(LinkedList *head)
+int len_list(node *head)
 {
 	int len = 0;
-	LinkedList *t = head;
+	node *t = head;
 
 	while (t != NULL)
 	{
@@ -114,9 +129,9 @@ int len_list(LinkedList *head)
 	return len;
 }
 
-int get_index(LinkedList *head, int index)
+int get_node(node *head, int index)
 {
-	LinkedList *t = head;
+	node *t = head;
 
 	for (int i = 0; i < index; i++)
 	{
@@ -126,9 +141,20 @@ int get_index(LinkedList *head, int index)
 	return t->num;
 }
 
-void free_up(LinkedList *head)
+void remove_node(node *head, int index)
 {
-	LinkedList *next = NULL;
+	node *p = head;
+
+	for (int i = 0; i < (index - 1); i++)
+	{
+		p = p->next;
+	}
+	p->next = p->next->next;
+}
+
+void free_up(node *head)
+{
+	node *next = NULL;
 	
 	while (head != NULL)
 	{
