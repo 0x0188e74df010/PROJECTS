@@ -50,6 +50,8 @@ int main(void)
 		}
 		else if (strcmp("print\n", command) == 0 || strcmp("p\n", command) == 0)
 		{
+			if (head == NULL) continue;
+
 			print_list(head);
 		}
 		else if (strcmp("len\n", command) == 0)
@@ -84,7 +86,7 @@ int main(void)
 			free_list(head);
 			head = NULL;
 		}
-		else if (strcmp("quit\n", command) == 0 || strcmp("q\n", command) == 0)
+		else if (strcmp("quit\n", command) == 0)
 		{
 			break;
 		}
