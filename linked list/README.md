@@ -7,9 +7,13 @@ print = prints list
 
 len = get length of list
 
-index (number) = get value of (number) index
+index (index) = get value of number at (index) index
 
-remove (number) = remove value at index (number)
+remove (index) = remove value at index (index)
+
+insert (number) (index) = insert number into index
+
+free = free list
 
 quit = quit program
 
