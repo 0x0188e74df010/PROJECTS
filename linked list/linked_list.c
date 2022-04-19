@@ -15,7 +15,7 @@ void print_list(node *head);
 int len_list(node *head);
 int get_node(node *head, int index);
 void remove_node(node *head, int index);
-void free_node(node *head);
+void free_list(node *head);
 
 
 int main(void)
@@ -70,12 +70,19 @@ int main(void)
 
 			if (num == 0) 
 			{
+				node *p = head;
 				head = head->next;
+				free(p);
 			}
 			else
 			{
 				remove_node(head, num);
 			}
+		}
+		else if (strcmp("free\n", command) == 0)
+		{
+			free_list(head);
+			head = NULL;
 		}
 		else if (strcmp("quit\n", command) == 0 || strcmp("q\n", command) == 0)
 		{
@@ -83,19 +90,18 @@ int main(void)
 		}
 	}
 
-	free_node(head);
+	free_list(head);
 
 	return 0;
 }
 
 node *create_new_node(const int number)
 {
-	node *element = NULL;
-	element = malloc(sizeof(node));
+	node *element = malloc(sizeof(node));
 	if (element == NULL) return NULL;
 
-	element->next = NULL;
 	element->num = number;
+	element->next = NULL;
 
 	printf("allocated new node: %p\n", element);
 
@@ -149,10 +155,13 @@ void remove_node(node *head, int index)
 	{
 		p = p->next;
 	}
+	node *free_node = p->next;
 	p->next = p->next->next;
+
+	free(free_node);
 }
 
-void free_node(node *head)
+void free_list(node *head)
 {
 	node *next = NULL;
 	
