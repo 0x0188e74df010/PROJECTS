@@ -15,8 +15,8 @@ void print_list(node *head);
 int len_list(node *head);
 int get_node(node *head, int index);
 void remove_node(node *head, int index);
-void free_list(node *head);
 void insert_node(node *head, int num, int index);
+void free_list(node *head);
 
 
 int main(void)
@@ -83,11 +83,6 @@ int main(void)
 				remove_node(head, index);
 			}
 		}
-		else if (strcmp("free\n", command) == 0)
-		{
-			free_list(head);
-			head = NULL;
-		}
 		else if (sscanf(command, "insert %d %d", &num, &index) != 0)
 		{
 			int len = len_list(head);
@@ -104,6 +99,11 @@ int main(void)
 			{
 				insert_node(head, num, index);
 			}
+		}
+		else if (strcmp("free\n", command) == 0)
+		{
+			free_list(head);
+			head = NULL;
 		}
 		else if (strcmp("quit\n", command) == 0)
 		{
