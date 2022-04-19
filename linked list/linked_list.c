@@ -5,23 +5,25 @@
 
 typedef struct node
 {
-	int num;
+	int number;
 	struct node *next;
 } node;
 
 
-node *create_new_node(const int number);
+node *create_node(const int num);
 void print_list(node *head);
 int len_list(node *head);
 int get_node(node *head, int index);
 void remove_node(node *head, int index);
 void free_list(node *head);
+void insert_node(node *head, int num, int index);
 
 
 int main(void)
 {
 	char command[16];
 	int num;
+	int index;
 
 	node *head = NULL;
 	node *added = NULL;
@@ -35,14 +37,14 @@ int main(void)
 		{
 			if (head == NULL)
 			{
-				head = create_new_node(num);
+				head = create_node(num);
 				if (head == NULL) break;
 
 				added = head;
 			}
 			else
 			{
-				added->next = create_new_node(num);
+				added->next = create_node(num);
 				if (added->next == NULL) break;
 
 				added = added->next;
@@ -58,19 +60,19 @@ int main(void)
 		{
 			printf("%d\n", len_list(head));
 		}
-		else if (sscanf(command, "index %d", &num) != 0 || sscanf(command, "i %d", &num) != 0)
+		else if (sscanf(command, "index %d", &index) != 0 || sscanf(command, "i %d", &index) != 0)
 		{
 			int len = len_list(head);
-			if (num >= len || len <= 0 || num < 0) continue;
+			if (index >= len || len <= 0 || index < 0) continue;
 
-			printf("%d\n", get_node(head, num));
+			printf("%d\n", get_node(head, index));
 		}
-		else if (sscanf(command, "remove %d", &num) != 0 || sscanf(command, "rm %d", &num) != 0)
+		else if (sscanf(command, "remove %d", &index) != 0 || sscanf(command, "rm %d", &index) != 0)
 		{
 			int len = len_list(head);
-			if (num >= len || len <= 0 || num < 0) continue;
+			if (index >= len || len <= 0 || index < 0) continue;
 
-			if (num == 0) 
+			if (index == 0) 
 			{
 				node *p = head;
 				head = head->next;
@@ -78,13 +80,30 @@ int main(void)
 			}
 			else
 			{
-				remove_node(head, num);
+				remove_node(head, index);
 			}
 		}
 		else if (strcmp("free\n", command) == 0)
 		{
 			free_list(head);
 			head = NULL;
+		}
+		else if (sscanf(command, "insert %d %d", &num, &index) != 0)
+		{
+			int len = len_list(head);
+			if (index >= len || len <= 0 || index < 0) continue;
+
+			if (index == 0)
+			{
+				node *p = head;
+
+				head = create_node(num);
+				head->next = p;
+			}
+			else
+			{
+				insert_node(head, num, index);
+			}
 		}
 		else if (strcmp("quit\n", command) == 0)
 		{
@@ -97,41 +116,41 @@ int main(void)
 	return 0;
 }
 
-node *create_new_node(const int number)
+node *create_node(const int num)
 {
-	node *element = malloc(sizeof(node));
-	if (element == NULL) return NULL;
+	node *new_node = malloc(sizeof(node));
+	if (new_node == NULL) return NULL;
 
-	element->num = number;
-	element->next = NULL;
+	new_node->number = num;
+	new_node->next = NULL;
 
-	printf("allocated new node: %p\n", element);
+	printf("allocated new node: %p\n", new_node);
 
-	return element;
+	return new_node;
 }
 
 void print_list(node *head)
 {
-	node *t = head;
+	node *p = head;
 	
 	printf("[");
-	while (t->next != NULL)
+	while (p->next != NULL)
 	{
-		printf("%d, ", t->num);
-		t = t->next;
+		printf("%d, ", p->number);
+		p = p->next;
 	}
-	printf("%d]\n", t->num);
+	printf("%d]\n", p->number);
 }
 
 int len_list(node *head)
 {
 	int len = 0;
-	node *t = head;
+	node *p = head;
 
-	while (t != NULL)
+	while (p != NULL)
 	{
 		len++;
-		t = t->next;
+		p = p->next;
 	}
 
 	return len;
@@ -139,14 +158,14 @@ int len_list(node *head)
 
 int get_node(node *head, int index)
 {
-	node *t = head;
+	node *p = head;
 
 	for (int i = 0; i < index; i++)
 	{
-		t = t->next;
+		p = p->next;
 	}
 
-	return t->num;
+	return p->number;
 }
 
 void remove_node(node *head, int index)
@@ -157,6 +176,7 @@ void remove_node(node *head, int index)
 	{
 		p = p->next;
 	}
+
 	node *free_node = p->next;
 	p->next = p->next->next;
 
@@ -174,4 +194,18 @@ void free_list(node *head)
 		printf("freed %p\n", head);
 		head = next;
 	}
+}
+
+void insert_node(node *head, int num, int index)
+{
+	node *p = head;
+
+	for (int i = 0; i < (index - 1); i++)
+	{
+		p = p->next;
+	}
+
+	node *old_p_next = p->next;
+	p->next = create_node(num);
+	p->next->next = old_p_next;
 }
