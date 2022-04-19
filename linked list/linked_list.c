@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 
 typedef struct node
 {
@@ -124,7 +130,7 @@ node *create_node(const int num)
 	new_node->number = num;
 	new_node->next = NULL;
 
-	printf("allocated new node: %p\n", new_node);
+	usleep(200000);								// sleep for 0.2 second
 
 	return new_node;
 }
@@ -191,9 +197,10 @@ void free_list(node *head)
 	{
 		next = head->next;
 		free(head);
-		printf("freed %p\n", head);
 		head = next;
 	}
+
+	sleep(1);							// sleep for 1 second
 }
 
 void insert_node(node *head, int num, int index)
