@@ -81,11 +81,11 @@ int main(void)
 
 			if (index == 0) 
 			{
-				node *p = head;
+				node *to_free = head;
 
 				head = head->next;
 
-				free(p);
+				free(to_free);
 			}
 			else
 			{
