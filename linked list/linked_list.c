@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 
 #ifdef _WIN32
@@ -34,7 +35,7 @@ int main(void)
 	node *head = NULL;
 	node *added = NULL;
 
-	while (1)
+	while (true)
 	{
 		printf(">> ");
 		fgets(command, 16, stdin);
@@ -81,7 +82,9 @@ int main(void)
 			if (index == 0) 
 			{
 				node *p = head;
+
 				head = head->next;
+
 				free(p);
 			}
 			else
@@ -183,10 +186,10 @@ void remove_node(node *head, int index)
 		p = p->next;
 	}
 
-	node *free_node = p->next;
+	node *to_free = p->next;
 	p->next = p->next->next;
 
-	free(free_node);
+	free(to_free);
 }
 
 void free_list(node *head)
