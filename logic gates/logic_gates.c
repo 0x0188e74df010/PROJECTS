@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
+#include <math.h>
 
 #define LENGTH 16
 
@@ -20,18 +20,23 @@ int main(void)
 {
 	char *a = long_to_binary(12379);
 	char *b = long_to_binary(21389);
-	char *c = xnor_operator(a, b);
 
 
 	printf("%s %ld\n", a, binary_to_long(a));
 	printf("%s %ld\n", b, binary_to_long(b));
+
 	printf("----------------\n");
-	printf("%s %ld\n", c, binary_to_long(c));
+	
+	printf("%s %ld\n", and_operator(a, b), binary_to_long(and_operator(a, b)));
+	printf("%s %ld\n", or_operator(a, b), binary_to_long(or_operator(a, b)));
+	printf("%s %ld\n", xor_operator(a, b), binary_to_long(xor_operator(a, b)));
+	printf("%s %ld\n", nand_operator(a, b), binary_to_long(nand_operator(a, b)));
+	printf("%s %ld\n", nor_operator(a, b), binary_to_long(nor_operator(a, b)));
+	printf("%s %ld\n", xnor_operator(a, b), binary_to_long(xnor_operator(a, b)));
 
 
 	free(a);
 	free(b);
-	free(c);
 
 	return 0;
 }
