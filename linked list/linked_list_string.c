@@ -10,7 +10,9 @@ typedef struct node
 {
 	char *str;
 	struct node *next;
-} node;
+}
+node;
+
 
 node *create_new_node(char *string);
 void print_list(node *head);
@@ -18,6 +20,7 @@ int len_list(node *head);
 char *get_node(node *head, int index);
 void remove_node(node *head, int index);
 void free_node(node *head);
+
 
 int main(void)
 {
@@ -163,4 +166,18 @@ void free_node(node *head)
 		free(head);
 		head = next_free;
 	}
+}
+
+void insert_node(node *head, char *string, int index)
+{
+	node *p = head;
+
+	for (int i = 0; i < (index - 1); i++)
+	{
+		p = p->next;
+	}
+
+	node *old_p_next = p->next;
+	p->next = create_new_node(string);
+	p->next->next = old_p_next;
 }
