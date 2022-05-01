@@ -3,11 +3,12 @@
 #include <string.h>
 #include <math.h>
 
+#define ul unsigned long
 #define LENGTH 16
 
 
-char *long_to_binary(unsigned long x);
-unsigned long binary_to_long(char *x);
+char *long_to_binary(ul x);
+ul binary_to_long(char *x);
 char *and_operator(char *x, char *y);
 char *or_operator(char *x, char *y);
 char *xor_operator(char *x, char *y);
@@ -41,15 +42,15 @@ int main(void)
 	return 0;
 }
 
-char *long_to_binary(unsigned long x)
+char *long_to_binary(ul x)
 {
-	unsigned long tmp_x = x;
-	unsigned long pow2;
+	ul tmp_x = x;
+	ul pow2;
 	char *output = malloc(LENGTH * sizeof(char));
 
 	for (int i = 0; i < LENGTH; i++)
 	{
-		pow2 = (unsigned long) pow(2, LENGTH - i - 1);
+		pow2 = (ul) pow(2, LENGTH - i - 1);
 
 		if (tmp_x >= pow2)
 		{
@@ -65,16 +66,16 @@ char *long_to_binary(unsigned long x)
 	return output;
 }
 
-unsigned long binary_to_long(char *x)
+ul binary_to_long(char *x)
 {
 	char *tmp_x = x;
-	unsigned long output = 0;
+	ul output = 0;
 
 	for (int i = 0; i < LENGTH; i++)
 	{
 		if (*tmp_x == '1')
 		{
-			output += (unsigned long) pow(2, LENGTH - i - 1);
+			output += (ul) pow(2, LENGTH - i - 1);
 		}
 
 		tmp_x++;
@@ -127,7 +128,7 @@ char *xor_operator(char *x, char *y)
 
 	for (int i = 0; i < LENGTH; i++)
 	{
-		if ((x[i] - '0' || y[i] - '0') && !(x[i] - '0' && y[i] - '0'))
+		if (x[i] - '0' ^ y[i] - '0')
 		{
 			output[i] = '1';
 		}
@@ -184,7 +185,7 @@ char *xnor_operator(char *x, char *y)
 
 	for (int i = 0; i < LENGTH; i++)
 	{
-		if (!((x[i] - '0' || y[i] - '0') && !(x[i] - '0' && y[i] - '0')))
+		if (!(x[i] - '0' ^ y[i] - '0'))
 		{
 			output[i] = '1';
 		}
